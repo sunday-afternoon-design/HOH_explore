@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     camera.position.z = 5;
 
     scene.add(camera)
-
+    scene.background = new THREE.Color(0x000000);
 
     window.addEventListener('resize', () => {
         sizes.width = window.innerWidth
