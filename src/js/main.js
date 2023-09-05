@@ -192,8 +192,8 @@ document.addEventListener("DOMContentLoaded", function() {
             imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * (.005 * i * i + 0.02);
             imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * (.005 * i * i + 0.02);
         }
-        meshSharkie.rotation.x = -mouseX / 600;
-        meshSharkie.rotation.y = mouseY / 600;
+        // meshSharkie.rotation.x = -mouseX / 600;
+        // meshSharkie.rotation.y = mouseY / 600;
         renderer.render(scene, camera);
     }
     init();
