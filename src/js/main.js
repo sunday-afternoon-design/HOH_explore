@@ -1,18 +1,22 @@
 import '../scss/styles.scss'
 
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls';
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
     const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
     for (let i = 0; i < scontent.length; i++) {
         let exploreTitles = document.createElement('div');
         exploreTitles.textContent = scontent[i];
-        exploreTitles.classList.add("title")
+        exploreTitles
+            .classList
+            .add("title")
         exploreTitles.setAttribute('id', scontentcss[i]);
-        document.body.appendChild(exploreTitles);
+        document
+            .body
+            .appendChild(exploreTitles);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -48,19 +52,19 @@ document.addEventListener("DOMContentLoaded", function() {
     texture1 = new THREE
         .TextureLoader()
         .load('./h1.png');
-    material1 = new THREE.MeshBasicMaterial({ map: texture1 });
+    material1 = new THREE.MeshBasicMaterial({map: texture1});
     texture2 = new THREE
         .TextureLoader()
         .load('./h2.png');
-    material2 = new THREE.MeshBasicMaterial({ map: texture2 });
+    material2 = new THREE.MeshBasicMaterial({map: texture2});
     texture3 = new THREE
         .TextureLoader()
         .load('./h3.png');
-    material3 = new THREE.MeshBasicMaterial({ map: texture3 });
+    material3 = new THREE.MeshBasicMaterial({map: texture3});
     texture4 = new THREE
         .TextureLoader()
         .load('./h4.png');
-    material4 = new THREE.MeshBasicMaterial({ map: texture4 });
+    material4 = new THREE.MeshBasicMaterial({map: texture4});
 
     fadeMaterial = new THREE.MeshBasicMaterial({
         color: 0x000, // Set the color of the material
@@ -74,7 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
     textureSharkie = new THREE
         .TextureLoader()
         .load('./HOH_Web_Sharkey_Icons 1.png');
-    materialSharkie = new THREE.MeshBasicMaterial({ map: textureSharkie, transparent: true, });
+    materialSharkie = new THREE.MeshBasicMaterial(
+        {map: textureSharkie, transparent: true}
+    );
 
     const sizes = {
         width: window.innerWidth,
@@ -101,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function() {
         windowHalfY = window.innerWidth * 0.71875 / 2;
         camera.aspect = sizes.width / sizes
             .height
-        camera
+            camera
             .updateProjectionMatrix()
         renderer.setSize(sizes.width, sizes.height)
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -121,7 +127,9 @@ document.addEventListener("DOMContentLoaded", function() {
     // scene.add(light3); const lighth = new THREE.HemisphereLight(0x7c7c7c, 0.5);
     // scene.add(lighth);
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer(
+        {canvas: canvas, antialias: true, alpha: true}
+    )
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true;
@@ -147,10 +155,18 @@ document.addEventListener("DOMContentLoaded", function() {
             mesh3.position.z = i * .05
             mesh4.position.z = i * .05
             let imgScale = .06 * i + 1
-            mesh1.scale.set(imgScale, imgScale, imgScale)
-            mesh2.scale.set(imgScale, imgScale, imgScale)
-            mesh3.scale.set(imgScale, imgScale, imgScale)
-            mesh4.scale.set(imgScale, imgScale, imgScale)
+            mesh1
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh2
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh3
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh4
+                .scale
+                .set(imgScale, imgScale, imgScale)
             imgSet.add(mesh1)
             imgSet.add(mesh2)
             imgSet.add(mesh3)
@@ -165,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-
     for (let i = 0; i < imgcnt; i++) {
         fadeMesh = new THREE.Mesh(new THREE.PlaneGeometry(6, 5), fadeMaterial);
         fadeMesh.position.z = i * .05 - 0.1
@@ -173,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(.4, .4), materialSharkie)
-    meshSharkie.position.z = .5
+    meshSharkie.position.z = .65
     scene.add(meshSharkie);
 
     let stopPosition = 3; // Define at what position the image will stop
@@ -182,20 +197,27 @@ document.addEventListener("DOMContentLoaded", function() {
         requestAnimationFrame(animate);
 
         // if (imgArray[0].position.z < stopPosition) {     imgArray[0].position.z +=
-        // speed;     imgArray[0].position.x += speed/2;     imgArray[0].position.y +=
-        // speed/2; } for(let i =0;i<imgcnt;i++){     if (imgArray[i].position.z <
-        // stopPosition) {         imgArray[i].position.z += speed/(i+1);
-        // imgArray[i].position.x += speed/(i+1);          imgArray[i].position.y +=
-        // speed/(i+1);     } }
-        // console.log(mouseX,mouseY)
+        // speed;     imgArray[0].position.x += speed / 2;     imgArray[0].position.y +=
+        // speed / 2; } for (let i = 0; i < imgcnt; i++) {     if
+        // (imgArray[i].position.z < stopPosition) {         imgArray[i].position.z +=
+        // speed / (i + 1);         imgArray[i].position.x += speed / (i + 1);
+        // imgArray[i].position.y += speed / (i + 1);     } } console.log(mouseX,
+        // mouseY)
+
         for (let i = 0; i < imgArray.length; i++) {
-            // imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * (.005 * i * i + 0.02);
-            // imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * (.005 * i * i + 0.02);
-            imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * ( + 0.2);
-            imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * ( 0.2);
+            imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x)
+            * (     .005 * i * i + 0.02 ); imgArray[i].position.y += (mouseY / 30000 * i
+            / 3 - imgArray[i].position.y) * (     .005 * i * i + 0.02 );
+            // imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * (
+            //     +
+            //         0.2
+            // );
+            // imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * (
+            //     0.2
+            // );
         }
-        // meshSharkie.rotation.x = -mouseX / 600;
-        // meshSharkie.rotation.y = mouseY / 600;
+        // meshSharkie.rotation.x = -mouseX / 600; meshSharkie.rotation.y = mouseY /
+        // 600;
         renderer.render(scene, camera);
     }
     init();
@@ -207,5 +229,19 @@ document.addEventListener("DOMContentLoaded", function() {
         mouseX = (event.clientX - windowHalfX) * 4;
         mouseY = (event.clientY - windowHalfY) * 4;
     }
+
+    document.addEventListener("mousemove", (event) => {
+        // Calculate the cursor's 3D position
+        const cursorPosition = new THREE.Vector3(
+            (event.clientX / window.innerWidth) * 3 - 1,
+            -((event.clientY / window.innerHeight) * 3 - 1),
+            0.5
+        );
+
+        cursorPosition.unproject(camera);
+
+        // Use lookAt to rotate the object
+        meshSharkie.lookAt(cursorPosition);
+    });
 
 });
