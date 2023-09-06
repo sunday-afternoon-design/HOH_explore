@@ -1,7 +1,7 @@
 @import "bootstrap/scss/bootstrap";
 @font-face {
     font-family: "bold";
-    src: url("./font.ttf") format("truetype");
+    src: url("../public/font.ttf") format("truetype");
 }
 
 body,
@@ -44,4 +44,12 @@ html {
     right: 1.2vw;
     text-align: right;
     top: 63.5vw;
+}
+
+#bgimage{
+    width:100%; 
+    position:absolute;
+     left:0px;
+     top:10px;
+     z-index: -1;
 }
