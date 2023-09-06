@@ -189,8 +189,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // speed/(i+1);     } }
         // console.log(mouseX,mouseY)
         for (let i = 0; i < imgArray.length; i++) {
-            imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * (.005 * i * i + 0.02);
-            imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * (.005 * i * i + 0.02);
+            // imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * (.005 * i * i + 0.02);
+            // imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * (.005 * i * i + 0.02);
+            imgArray[i].position.x += (-mouseX / 30000 * i / 3 - imgArray[i].position.x) * ( + 0.2);
+            imgArray[i].position.y += (mouseY / 30000 * i / 3 - imgArray[i].position.y) * ( 0.2);
         }
         // meshSharkie.rotation.x = -mouseX / 600;
         // meshSharkie.rotation.y = mouseY / 600;
