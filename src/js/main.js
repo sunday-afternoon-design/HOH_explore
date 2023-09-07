@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function() {
         scene.add(fadeMesh);
     }
 
-    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(.4, .4), materialSharkie)
+    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(.43, .43), materialSharkie)
     meshSharkie.position.z = .65
     scene.add(meshSharkie);
 
