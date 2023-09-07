@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let imgSet = new THREE.Group();
 
     let imgcnt = 10;
+    let imgScale
 
     texture1 = new THREE
         .TextureLoader()
@@ -143,19 +144,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 // mesh2.position.z = 0
                 // mesh3.position.z = 0
                 // mesh4.position.z = 0
-            let imgScale = .06 * i + 1
-            mesh1
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh2
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh3
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh4
-                .scale
-                .set(imgScale, imgScale, imgScale)
+
+            // imgScale = .06 * i + 1
+            // mesh1
+            //     .scale
+            //     .set(imgScale, imgScale, imgScale)
+            // mesh2
+            //     .scale
+            //     .set(imgScale, imgScale, imgScale)
+            // mesh3
+            //     .scale
+            //     .set(imgScale, imgScale, imgScale)
+            // mesh4
+            //     .scale
+            //     .set(imgScale, imgScale, imgScale)
             imgSet.add(mesh1)
             imgSet.add(mesh2)
             imgSet.add(mesh3)
@@ -185,31 +187,21 @@ document.addEventListener("DOMContentLoaded", function() {
     function animate() {
         requestAnimationFrame(animate);
 
-        // if (imgArray[0].position.z < stopPosition) {
-        //     imgArray[0].position.z +=
-        //         speed;
-        //     imgArray[0].position.x += speed / 2;
-        //     imgArray[0].position.y +=
-        //         speed / 2;
-        // }
-
-        // let imgInterval = 
-        // for (let i = 0; i < imgcnt; i++) {
-        // for (let i = 1; i < 10; i++) {
-        //     if (imgArray[i].position.z <= i * .05) {
-        //         speed = .04;
-        //         imgScale += .01;
-        //         imgArray[i].position.z += .05;
-        //         imgArray[i]
-        //             .scale
-        //             .set(imgScale, imgScale, imgScale);
-        //     } else if (imgArray[i].position.z > i * .05) {
-        //         imgScale -= .05;
-        //         imgArray[i]
-        //             .scale
-        //             .set(imgScale, imgScale, imgScale);
-        //     }
-        // }
+        for (let i = 0; i < imgcnt; i++) {
+            if (imgArray[i].position.z <= (i + 1) * .05) {
+                let ZmovingSpeed = .001;
+                // imgScale += .0001;
+                imgArray[i].position.z += ZmovingSpeed;
+                // imgArray[i]
+                //     .scale
+                //     .set(imgScale, imgScale, imgScale);
+                // } else if (imgArray[i].position.z > i * .05) {
+                //     imgScale = 1.05;
+                //     imgArray[i]
+                //         .scale
+                //         .set(imgScale, imgScale, imgScale);
+            }
+        }
         // console.log(imgArray[1].position.z)
 
         for (let i = 0; i < imgArray.length; i++) {
@@ -242,26 +234,6 @@ document.addEventListener("DOMContentLoaded", function() {
     class marchingImg {
         constructor(x, y, z) {
             this.geometry = new THREE.PlaneGeometry(.03 * imgRatio, .03)
-
-            // for (let i = 0; i < imgcnt; i++) {
-            //     mesh1 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material1);
-            //     mesh2 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material2);
-            //     mesh3 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material3);
-            //     mesh4 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material4);
-            //     mesh1.position.x = -.5 + -.05 * i
-            //     mesh1.position.y = -.3 + -.03 * i
-            //     mesh2.position.x = .5 + .05 * i
-            //     mesh2.position.y = -.3 + -.03 * i
-            //     mesh3.position.x = -.5 + -.05 * i
-            //     mesh3.position.y = .3 + .03 * i
-            //     mesh4.position.x = .5 + .05 * i
-            //     mesh4.position.y = .3 + .03 * i
-
-            //     mesh1.position.z = i * .05
-            //     mesh2.position.z = i * .05
-            //     mesh3.position.z = i * .05
-            //     mesh4.position.z = i * .05
-            // }
         }
     }
 
