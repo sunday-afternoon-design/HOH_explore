@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     /* Basic Setup */
     /* -------------------------------------------------------------------------- */
     let imgRatio = 640 / 375;
-    let sharkirSize = 0.5;
+    let sharkirSize = 0.65;
     // let isMobileDevice = isMobile(window.navigator).any;
     let mouseX = 0,
         mouseY = 0;
