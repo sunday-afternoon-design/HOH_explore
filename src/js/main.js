@@ -5,24 +5,25 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
-    const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
-    for (let i = 0; i < scontent.length; i++) {
-        let exploreTitles = document.createElement('div');
-        exploreTitles.textContent = scontent[i];
-        exploreTitles
-            .classList
-            .add("title")
-        exploreTitles.setAttribute('id', scontentcss[i]);
-        document
-            .body
-            .appendChild(exploreTitles);
-    }
+    // const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
+    // const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
+    // for (let i = 0; i < scontent.length; i++) {
+    //     let exploreTitles = document.createElement('div');
+    //     exploreTitles.textContent = scontent[i];
+    //     exploreTitles
+    //         .classList
+    //         .add("title")
+    //     exploreTitles.setAttribute('id', scontentcss[i]);
+    //     document
+    //         .body
+    //         .appendChild(exploreTitles);
+    // }
 
     /* -------------------------------------------------------------------------- */
     /* Basic Setup */
     /* -------------------------------------------------------------------------- */
-    let imgRatio = 483 / 256;
+    let imgRatio = 640 / 375;
+    let sharkirSize = 0.5;
     // let isMobileDevice = isMobile(window.navigator).any;
     let mouseX = 0,
         mouseY = 0;
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         meshSharkie;
     textureSharkie = new THREE
         .TextureLoader()
-        .load('./Group 298.png');
+        .load('./new sharkie.png');
     materialSharkie = new THREE.MeshBasicMaterial({ map: textureSharkie, transparent: true });
 
     const sizes = {
@@ -145,19 +146,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 // mesh3.position.z = 0
                 // mesh4.position.z = 0
 
-            // imgScale = .06 * i + 1
-            // mesh1
-            //     .scale
-            //     .set(imgScale, imgScale, imgScale)
-            // mesh2
-            //     .scale
-            //     .set(imgScale, imgScale, imgScale)
-            // mesh3
-            //     .scale
-            //     .set(imgScale, imgScale, imgScale)
-            // mesh4
-            //     .scale
-            //     .set(imgScale, imgScale, imgScale)
+            imgScale = .06 * i + 1
+            mesh1
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh2
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh3
+                .scale
+                .set(imgScale, imgScale, imgScale)
+            mesh4
+                .scale
+                .set(imgScale, imgScale, imgScale)
             imgSet.add(mesh1)
             imgSet.add(mesh2)
             imgSet.add(mesh3)
@@ -178,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         scene.add(fadeMesh);
     }
 
-    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(.43, .43), materialSharkie)
+    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(sharkirSize, sharkirSize), materialSharkie)
     meshSharkie.position.z = .65
     scene.add(meshSharkie);
 
@@ -187,21 +188,21 @@ document.addEventListener("DOMContentLoaded", function() {
     function animate() {
         requestAnimationFrame(animate);
 
-        for (let i = 0; i < imgcnt; i++) {
-            if (imgArray[i].position.z <= (i + 1) * .05) {
-                let ZmovingSpeed = .001;
-                // imgScale += .0001;
-                imgArray[i].position.z += ZmovingSpeed;
-                // imgArray[i]
-                //     .scale
-                //     .set(imgScale, imgScale, imgScale);
-                // } else if (imgArray[i].position.z > i * .05) {
-                //     imgScale = 1.05;
-                //     imgArray[i]
-                //         .scale
-                //         .set(imgScale, imgScale, imgScale);
-            }
-        }
+        // for (let i = 0; i < imgcnt; i++) {
+        //     if (imgArray[i].position.z <= (i + 1) * .05) {
+        //         let ZmovingSpeed = .001;
+        //         // imgScale += .0001;
+        //         imgArray[i].position.z += ZmovingSpeed;
+        //         // imgArray[i]
+        //         //     .scale
+        //         //     .set(imgScale, imgScale, imgScale);
+        //         // } else if (imgArray[i].position.z > i * .05) {
+        //         //     imgScale = 1.05;
+        //         //     imgArray[i]
+        //         //         .scale
+        //         //         .set(imgScale, imgScale, imgScale);
+        //     }
+        // }
         // console.log(imgArray[1].position.z)
 
         for (let i = 0; i < imgArray.length; i++) {
