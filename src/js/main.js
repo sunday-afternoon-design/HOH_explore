@@ -5,24 +5,25 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
-    const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
-    for (let i = 0; i < scontent.length; i++) {
-        let exploreTitles = document.createElement('div');
-        exploreTitles.textContent = scontent[i];
-        exploreTitles
-            .classList
-            .add("title")
-        exploreTitles.setAttribute('id', scontentcss[i]);
-        document
-            .body
-            .appendChild(exploreTitles);
-    }
+    // const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
+    // const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
+    // for (let i = 0; i < scontent.length; i++) {
+    //     let exploreTitles = document.createElement('div');
+    //     exploreTitles.textContent = scontent[i];
+    //     exploreTitles
+    //         .classList
+    //         .add("title")
+    //     exploreTitles.setAttribute('id', scontentcss[i]);
+    //     document
+    //         .body
+    //         .appendChild(exploreTitles);
+    // }
 
     /* -------------------------------------------------------------------------- */
     /* Basic Setup */
     /* -------------------------------------------------------------------------- */
-    let imgRatio = 483 / 256;
+    let imgRatio = 640 / 375;
+    let sharkirSize = 0.5;
     // let isMobileDevice = isMobile(window.navigator).any;
     let mouseX = 0,
         mouseY = 0;
@@ -47,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let imgSet = new THREE.Group();
 
     let imgcnt = 10;
+    let imgScale
 
     texture1 = new THREE
         .TextureLoader()
@@ -76,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         meshSharkie;
     textureSharkie = new THREE
         .TextureLoader()
-        .load('./Group 298.png');
+        .load('./new sharkie.png');
     materialSharkie = new THREE.MeshBasicMaterial({ map: textureSharkie, transparent: true });
 
     const sizes = {
@@ -143,7 +145,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 // mesh2.position.z = 0
                 // mesh3.position.z = 0
                 // mesh4.position.z = 0
-            let imgScale = .06 * i + 1
+
+            imgScale = .06 * i + 1
             mesh1
                 .scale
                 .set(imgScale, imgScale, imgScale)
@@ -176,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         scene.add(fadeMesh);
     }
 
-    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(.43, .43), materialSharkie)
+    meshSharkie = new THREE.Mesh(new THREE.PlaneGeometry(sharkirSize, sharkirSize), materialSharkie)
     meshSharkie.position.z = .65
     scene.add(meshSharkie);
 
@@ -185,29 +188,19 @@ document.addEventListener("DOMContentLoaded", function() {
     function animate() {
         requestAnimationFrame(animate);
 
-        // if (imgArray[0].position.z < stopPosition) {
-        //     imgArray[0].position.z +=
-        //         speed;
-        //     imgArray[0].position.x += speed / 2;
-        //     imgArray[0].position.y +=
-        //         speed / 2;
-        // }
-
-        // let imgInterval = 
         // for (let i = 0; i < imgcnt; i++) {
-        // for (let i = 1; i < 10; i++) {
-        //     if (imgArray[i].position.z <= i * .05) {
-        //         speed = .04;
-        //         imgScale += .01;
-        //         imgArray[i].position.z += .05;
-        //         imgArray[i]
-        //             .scale
-        //             .set(imgScale, imgScale, imgScale);
-        //     } else if (imgArray[i].position.z > i * .05) {
-        //         imgScale -= .05;
-        //         imgArray[i]
-        //             .scale
-        //             .set(imgScale, imgScale, imgScale);
+        //     if (imgArray[i].position.z <= (i + 1) * .05) {
+        //         let ZmovingSpeed = .001;
+        //         // imgScale += .0001;
+        //         imgArray[i].position.z += ZmovingSpeed;
+        //         // imgArray[i]
+        //         //     .scale
+        //         //     .set(imgScale, imgScale, imgScale);
+        //         // } else if (imgArray[i].position.z > i * .05) {
+        //         //     imgScale = 1.05;
+        //         //     imgArray[i]
+        //         //         .scale
+        //         //         .set(imgScale, imgScale, imgScale);
         //     }
         // }
         // console.log(imgArray[1].position.z)
@@ -242,26 +235,6 @@ document.addEventListener("DOMContentLoaded", function() {
     class marchingImg {
         constructor(x, y, z) {
             this.geometry = new THREE.PlaneGeometry(.03 * imgRatio, .03)
-
-            // for (let i = 0; i < imgcnt; i++) {
-            //     mesh1 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material1);
-            //     mesh2 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material2);
-            //     mesh3 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material3);
-            //     mesh4 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material4);
-            //     mesh1.position.x = -.5 + -.05 * i
-            //     mesh1.position.y = -.3 + -.03 * i
-            //     mesh2.position.x = .5 + .05 * i
-            //     mesh2.position.y = -.3 + -.03 * i
-            //     mesh3.position.x = -.5 + -.05 * i
-            //     mesh3.position.y = .3 + .03 * i
-            //     mesh4.position.x = .5 + .05 * i
-            //     mesh4.position.y = .3 + .03 * i
-
-            //     mesh1.position.z = i * .05
-            //     mesh2.position.z = i * .05
-            //     mesh3.position.z = i * .05
-            //     mesh4.position.z = i * .05
-            // }
         }
     }
 
