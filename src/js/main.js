@@ -169,8 +169,10 @@ document.addEventListener("DOMContentLoaded", function() {
             imgGroup.add(mesh3)
             imgGroup.add(mesh4)
             imgArray.push(imgGroup)
+           
             scene.add(imgGroup);
         }
+        imgArray[9].position.z += 0.01;
     }
 
     for (let i = 0; i < imgcnt; i++) {
@@ -188,22 +190,42 @@ document.addEventListener("DOMContentLoaded", function() {
     function animate() {
         requestAnimationFrame(animate);
 
-        // for (let i = 0; i < imgcnt; i++) {
+        // for (let i = 0; i < 9; i++) {
         //     if (imgArray[i].position.z <= (i + 1) * .05) {
-        //         let ZmovingSpeed = .001;
+        //         let ZmovingSpeed = .005;
         //         // imgScale += .0001;
         //         imgArray[i].position.z += ZmovingSpeed;
         //         // imgArray[i]
         //         //     .scale
         //         //     .set(imgScale, imgScale, imgScale);
-        //         // } else if (imgArray[i].position.z > i * .05) {
-        //         //     imgScale = 1.05;
-        //         //     imgArray[i]
-        //         //         .scale
-        //         //         .set(imgScale, imgScale, imgScale);
+        //         } else if (imgArray[i].position.z > i * .05) {
+        //             // imgScale = 1.05;
+        //             // imgArray[i]
+        //             //     .scale
+        //             //     .set(imgScale, imgScale, imgScale);
+        //             imgArray[i].position.z = i*.05
         //     }
         // }
         // console.log(imgArray[1].position.z)
+        for (let i = 0; i < 9; i++) {
+               if (imgArray[0].position.z < 0.05) {
+                let ZmovingSpeed = .05/24;
+                // imgScale += .0001;
+                imgArray[i].position.z += ZmovingSpeed;
+                // imgArray[i]
+                //     .scale
+                //     .set(imgScale, imgScale, imgScale);
+                // console.log("growing")
+                } else {
+                    // imgScale = 1.05;
+                    // imgArray[i]
+                    //     .scale
+                    //     .set(imgScale, imgScale, imgScale);
+                    imgArray[i].position.z -= .05
+                    // console.log("return")
+            }
+        }
+        // console.log(imgArray[0].children[0].position.z,imgArray[1].children[0].position.z)
 
         for (let i = 0; i < imgArray.length; i++) {
             imgArray[i].position.x += (-mouseX / 90000 * i - imgArray[i].position.x) * (.005 * i * i + 0.02);
@@ -216,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
     animate();
 
     document.addEventListener('mousemove', onDocumentMouseMove);
-
     function onDocumentMouseMove(event) {
         mouseX = (event.clientX - windowHalfX) * 4;
         mouseY = (event.clientY - windowHalfY) * 4;
@@ -231,6 +252,9 @@ document.addEventListener("DOMContentLoaded", function() {
         meshSharkie.lookAt(cursorPosition);
     });
 
+    // console.log(imgArray[0].children[0].position.z)
+    // console.log(imgArray[1].children[0].position.z)
+    // console.log(imgArray[2].children[0].position.z)
 
     class marchingImg {
         constructor(x, y, z) {
