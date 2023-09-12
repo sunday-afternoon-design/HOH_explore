@@ -2,15 +2,15 @@ import '../scss/styles.scss'
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Stats from 'stats-js';
+// import Stats from 'stats-js';
 document.addEventListener("DOMContentLoaded", function() {
 
 
     /* -------------------------------------------------------------------------- */
     /* Basic Setup */
     /* -------------------------------------------------------------------------- */
-    var stats = new Stats();
-    document.body.appendChild(stats.dom);
+    /* var stats = new Stats();
+    document.body.appendChild(stats.dom);    */
     let imgRatio = 640 / 375; //image ratio
     let speed = 0.004; //marching stack speed towards the front
     let sharkirSize = 0.75; //sharkie sticker size in the center
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
     /*                          animation and interaction                         */
     /* -------------------------------------------------------------------------- */
     function animate() {
-        stats.begin();
+        /* stats.begin();*/
         requestAnimationFrame(animate);
 
         // update the marching image stacks
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function() {
         imgStack[10].position.y += (mouseY / 90000 * 10 - imgStack[10].position.y) * (.005 * 100 + 0.02);
 
         renderer.render(scene, camera);
-        stats.end();
+        /* stats.end();*/
     }
     init();
     animate();
