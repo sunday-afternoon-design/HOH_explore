@@ -2,8 +2,10 @@ import '../scss/styles.scss'
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
+import Stats from 'stats-js';
 document.addEventListener("DOMContentLoaded", function() {
+    var stats = new Stats();
+    document.body.appendChild(stats.dom);
 
     // const scontent = ['IMMERSIVE WORLDS', 'GAMING ENVIRONMENTS', 'CONTENT CREATION', 'FOOD & BEVERAGE'];
     // const scontentcss = ['titleStyle1', 'titleStyle2', 'titleStyle3', 'titleStyle4'];
@@ -19,12 +21,15 @@ document.addEventListener("DOMContentLoaded", function() {
     //         .appendChild(exploreTitles);
     // }
 
+
     /* -------------------------------------------------------------------------- */
     /* Basic Setup */
     /* -------------------------------------------------------------------------- */
     let imgRatio = 640 / 375;
+    let speed = 0.004;
     let sharkirSize = 0.75;
-    // let isMobileDevice = isMobile(window.navigator).any;
+    let imgScale = 0.04
+        // let isMobileDevice = isMobile(window.navigator).any;
     let mouseX = 0,
         mouseY = 0;
     let windowHalfX = window.innerWidth / 2;
@@ -32,23 +37,17 @@ document.addEventListener("DOMContentLoaded", function() {
     let fadeMaterial,
         fadeMesh;
     let texture1,
-        material1,
-        mesh1;
+        material1;
     let texture2,
-        material2,
-        mesh2;
+        material2;
     let texture3,
-        material3,
-        mesh3;
+        material3;
     let texture4,
-        material4,
-        mesh4;
+        material4;
 
-    let imgArray = [];
-    let imgSet = new THREE.Group();
+
 
     let imgcnt = 10;
-    let imgScale
 
     texture1 = new THREE
         .TextureLoader()
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fadeMaterial = new THREE.MeshBasicMaterial({
         color: 0x000,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.05
     });
 
     let textureSharkie,
@@ -117,65 +116,104 @@ document.addEventListener("DOMContentLoaded", function() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // const controls = new OrbitControls(camera, renderer.domElement);
 
-    function init() {
-        for (let i = 0; i < imgcnt; i++) {
-            mesh1 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material1);
-            mesh2 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material2);
-            mesh3 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material3);
-            mesh4 = new THREE.Mesh(new THREE.PlaneGeometry(.5 * imgRatio, .5), material4);
-            mesh1.position.x = -.5 + -.05 * i
-            mesh1.position.y = -.3 + -.03 * i
-            mesh2.position.x = .5 + .05 * i
-            mesh2.position.y = -.3 + -.03 * i
-            mesh3.position.x = -.5 + -.05 * i
-            mesh3.position.y = .3 + .03 * i
-            mesh4.position.x = .5 + .05 * i
-            mesh4.position.y = .3 + .03 * i
 
-            mesh1.position.z = i * .05
-            mesh2.position.z = i * .05
-            mesh3.position.z = i * .05
-            mesh4.position.z = i * .05
-                // mesh1.position.z = i * .05 - .05
-                // mesh2.position.z = i * .05 - .05
-                // mesh3.position.z = i * .05 - .05
-                // mesh4.position.z = i * .05 - .05
-                // mesh1.position.z = 0
-                // mesh2.position.z = 0
-                // mesh3.position.z = 0
-                // mesh4.position.z = 0
-
-            imgScale = .06 * i + 1
-            mesh1
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh2
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh3
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            mesh4
-                .scale
-                .set(imgScale, imgScale, imgScale)
-            imgSet.add(mesh1)
-            imgSet.add(mesh2)
-            imgSet.add(mesh3)
-            imgSet.add(mesh4)
-            let imgGroup = new THREE.Group();
-            imgGroup.add(mesh1)
-            imgGroup.add(mesh2)
-            imgGroup.add(mesh3)
-            imgGroup.add(mesh4)
-            imgArray.push(imgGroup)
-            scene.add(imgGroup);
+    class MarchingImage {
+        constructor(material, imgRatio, initialZ, speed, id, x, y, imgScale) {
+            this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(0.5 * imgRatio, 0.5), material);
+            this.id = id;
+            this.mesh.position.z = initialZ;
+            this.mesh.position.x = x * .5 + x * .05 * this.id;
+            this.mesh.position.y = y * .3 + y * .03 * this.id;
+            // this.mesh.scale.set(imgScale, imgScale, imgScale);
+            this.speed = speed;
+            this.movingForward = true;
+            this.imgScale = imgScale;
+            this.mesh.scale.set(this.imgScale, this.imgScale, this.imgScale)
         }
+
+        updatePosition(x, y) {
+            if (this.movingForward) {
+                this.mesh.position.z += this.speed;
+                this.mesh.position.x += this.speed * x;
+                this.mesh.position.y += this.speed / 5 * 3 * y;
+                // this.mesh.scale += this.speed / 5 * 
+                this.imgScale += this.speed / 5 * 3;
+            } else {
+                this.mesh.position.z = 0;
+                this.mesh.position.x = x * .5;
+                this.mesh.position.y = y * .3;
+                this.imgScale = 1;
+            }
+            this.mesh.scale.set(this.imgScale, this.imgScale, this.imgScale)
+
+            if (this.mesh.position.z >= .5) {
+                this.movingForward = false;
+            } else {
+                this.movingForward = true;
+            }
+
+
+        }
+        getPositionZ() {
+            return this.mesh.position.z
+        }
+
     }
 
-    for (let i = 0; i < imgcnt; i++) {
-        fadeMesh = new THREE.Mesh(new THREE.PlaneGeometry(6, 5), fadeMaterial);
-        fadeMesh.position.z = i * .05 - 0.1
+    let images1 = [];
+    let images2 = [];
+    let images3 = [];
+    let images4 = [];
+    let imgStack = [];
+
+    function init() {
+
+        for (let i = 0; i < imgcnt; i++) {
+            let image1 = new MarchingImage(material1, imgRatio, i * 0.05, speed, i, -1, -1, imgScale * i + 1);
+            let image3 = new MarchingImage(material3, imgRatio, i * 0.05, speed, i, 1, 1, imgScale * i + 1);
+            let image2 = new MarchingImage(material2, imgRatio, i * 0.05, speed, i, 1, -1, imgScale * i + 1);
+            let image4 = new MarchingImage(material4, imgRatio, i * 0.05, speed, i, -1, 1, imgScale * i + 1);
+            let imgGroup = new THREE.Group();
+            imgGroup.add(image1.mesh)
+            imgGroup.add(image2.mesh)
+            imgGroup.add(image3.mesh)
+            imgGroup.add(image4.mesh)
+            scene.add(imgGroup);
+            imgStack.push(imgGroup);
+            images1.push(image1);
+            images2.push(image2);
+            images3.push(image3);
+            images4.push(image4);
+        }
+
+
+        let front1 = new THREE.Mesh(new THREE.PlaneGeometry(0.5 * imgRatio, 0.5), material1)
+        let front2 = new THREE.Mesh(new THREE.PlaneGeometry(0.5 * imgRatio, 0.5), material2)
+        let front3 = new THREE.Mesh(new THREE.PlaneGeometry(0.5 * imgRatio, 0.5), material3)
+        let front4 = new THREE.Mesh(new THREE.PlaneGeometry(0.5 * imgRatio, 0.5), material4)
+        front1.position.set(-1, -.6, .51)
+        front2.position.set(1, -.6, .51)
+        front3.position.set(1, .6, .51)
+        front4.position.set(-1, .6, .51)
+        let frontScale = 1 + 0.03 * 10;
+        front1.scale.set(frontScale, frontScale, frontScale)
+        front2.scale.set(frontScale, frontScale, frontScale)
+        front3.scale.set(frontScale, frontScale, frontScale)
+        front4.scale.set(frontScale, frontScale, frontScale)
+        let imgGroup = new THREE.Group();
+        imgGroup.add(front1)
+        imgGroup.add(front2)
+        imgGroup.add(front3)
+        imgGroup.add(front4)
+        imgStack.push(imgGroup)
+        scene.add(imgGroup);
+    }
+
+    for (let i = 0; i < imgcnt * 10; i++) {
+        fadeMesh = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), fadeMaterial);
+        fadeMesh.position.z = i * .05 / 10 - 0.1;
         scene.add(fadeMesh);
     }
 
@@ -183,34 +221,33 @@ document.addEventListener("DOMContentLoaded", function() {
     meshSharkie.position.z = .65
     scene.add(meshSharkie);
 
-    let speed = .0004;
-
     function animate() {
+        stats.begin();
         requestAnimationFrame(animate);
 
-        // for (let i = 0; i < imgcnt; i++) {
-        //     if (imgArray[i].position.z <= (i + 1) * .05) {
-        //         let ZmovingSpeed = .001;
-        //         // imgScale += .0001;
-        //         imgArray[i].position.z += ZmovingSpeed;
-        //         // imgArray[i]
-        //         //     .scale
-        //         //     .set(imgScale, imgScale, imgScale);
-        //         // } else if (imgArray[i].position.z > i * .05) {
-        //         //     imgScale = 1.05;
-        //         //     imgArray[i]
-        //         //         .scale
-        //         //         .set(imgScale, imgScale, imgScale);
-        //     }
-        // }
-        // console.log(imgArray[1].position.z)
-
-        for (let i = 0; i < imgArray.length; i++) {
-            imgArray[i].position.x += (-mouseX / 90000 * i - imgArray[i].position.x) * (.005 * i * i + 0.02);
-            imgArray[i].position.y += (mouseY / 90000 * i - imgArray[i].position.y) * (.005 * i * i + 0.02);
+        for (let i = 0; i < imgcnt; i++) {
+            images1[i].updatePosition(-1, -1);
+            images2[i].updatePosition(1, -1);
+            images3[i].updatePosition(1, 1);
+            images4[i].updatePosition(-1, 1);
         }
 
+        // for (let i = 0; i < (imgcnt + 1); i++) {
+
+        for (let i = 0; i < imgcnt; i++) {
+            let a = images1[i].getPositionZ() / .05
+                // images2[i].getPositionZ();
+                // images3[i].getPositionZ();
+                // images4[i].getPositionZ();
+            imgStack[i].position.x += (-mouseX / 90000 * a - imgStack[i].position.x) * (.005 * a * a + 0.02);
+            imgStack[i].position.y += (mouseY / 90000 * a - imgStack[i].position.y) * (.005 * a * a + 0.02);
+
+        }
+        imgStack[10].position.x += (-mouseX / 90000 * 10 - imgStack[10].position.x) * (.005 * 100 + 0.02);
+        imgStack[10].position.y += (mouseY / 90000 * 10 - imgStack[10].position.y) * (.005 * 100 + 0.02);
+
         renderer.render(scene, camera);
+        stats.end();
     }
     init();
     animate();
@@ -232,10 +269,25 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 
-    class marchingImg {
-        constructor(x, y, z) {
-            this.geometry = new THREE.PlaneGeometry(.03 * imgRatio, .03)
-        }
-    }
+    const subPage1 = document.getElementById("subPage1");
+    const subPage2 = document.getElementById("subPage2");
+    const subPage3 = document.getElementById("subPage3");
+    const subPage4 = document.getElementById("subPage4");
+    const externalLink1 = "https://google.com";
+    const externalLink2 = "https://www.bing.com/";
+    const externalLink3 = "https://openai.com/";
+    const externalLink4 = "https://www.youtube.com/";
+    subPage1.addEventListener("click", function() {
+        window.open(externalLink1, "_blank");
+    });
+    subPage2.addEventListener("click", function() {
+        window.open(externalLink2, "_blank");
+    });
+    subPage3.addEventListener("click", function() {
+        window.open(externalLink3, "_blank");
+    });
+    subPage4.addEventListener("click", function() {
+        window.open(externalLink4, "_blank");
+    });
 
 });
