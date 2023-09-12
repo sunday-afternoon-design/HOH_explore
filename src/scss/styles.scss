@@ -46,10 +46,38 @@ html {
     top: 63.5vw;
 }
 
-#bgimage{
-    width:100%; 
-    position:absolute;
-     left:0px;
-     top:10px;
-     z-index: -1;
+#bgimage {
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 10px;
+    z-index: -1;
+}
+
+.subpages {
+    position: absolute;
+    z-index: 5;
+    width: 40vw;
+    height: 28.726vw;
+    cursor: pointer;
+}
+
+#subPage1 {
+    top: 0px;
+    left: 0px;
+}
+
+#subPage2 {
+    top: 0px;
+    right: 0px;
+}
+
+#subPage3 {
+    top: 43.149vw;
+    right: 0px;
+}
+
+#subPage4 {
+    top: 43.149vw;
+    left: 0px;
 }

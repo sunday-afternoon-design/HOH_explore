@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let imgRatio = 640 / 375;
     let speed = 0.004;
     let sharkirSize = 0.75;
-    // let isMobileDevice = isMobile(window.navigator).any;
+    let imgScale = 0.04
+        // let isMobileDevice = isMobile(window.navigator).any;
     let mouseX = 0,
         mouseY = 0;
     let windowHalfX = window.innerWidth / 2;
@@ -115,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    const controls = new OrbitControls(camera, renderer.domElement);
+    // const controls = new OrbitControls(camera, renderer.domElement);
 
 
     class MarchingImage {
@@ -128,6 +129,8 @@ document.addEventListener("DOMContentLoaded", function() {
             // this.mesh.scale.set(imgScale, imgScale, imgScale);
             this.speed = speed;
             this.movingForward = true;
+            this.imgScale = imgScale;
+            this.mesh.scale.set(this.imgScale, this.imgScale, this.imgScale)
         }
 
         updatePosition(x, y) {
@@ -135,17 +138,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 this.mesh.position.z += this.speed;
                 this.mesh.position.x += this.speed * x;
                 this.mesh.position.y += this.speed / 5 * 3 * y;
+                // this.mesh.scale += this.speed / 5 * 
+                this.imgScale += this.speed / 5 * 3;
             } else {
                 this.mesh.position.z = 0;
                 this.mesh.position.x = x * .5;
                 this.mesh.position.y = y * .3;
+                this.imgScale = 1;
             }
+            this.mesh.scale.set(this.imgScale, this.imgScale, this.imgScale)
 
             if (this.mesh.position.z >= .5) {
                 this.movingForward = false;
             } else {
                 this.movingForward = true;
             }
+
+
+        }
+        getPositionZ() {
+            return this.mesh.position.z
         }
 
     }
@@ -159,10 +171,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function init() {
 
         for (let i = 0; i < imgcnt; i++) {
-            let image1 = new MarchingImage(material1, imgRatio, i * 0.05, speed, i, -1, -1, .06 * i + 1);
-            let image3 = new MarchingImage(material3, imgRatio, i * 0.05, speed, i, 1, 1, .06 * i + 1);
-            let image2 = new MarchingImage(material2, imgRatio, i * 0.05, speed, i, 1, -1, .06 * i + 1);
-            let image4 = new MarchingImage(material4, imgRatio, i * 0.05, speed, i, -1, 1, .06 * i + 1);
+            let image1 = new MarchingImage(material1, imgRatio, i * 0.05, speed, i, -1, -1, imgScale * i + 1);
+            let image3 = new MarchingImage(material3, imgRatio, i * 0.05, speed, i, 1, 1, imgScale * i + 1);
+            let image2 = new MarchingImage(material2, imgRatio, i * 0.05, speed, i, 1, -1, imgScale * i + 1);
+            let image4 = new MarchingImage(material4, imgRatio, i * 0.05, speed, i, -1, 1, imgScale * i + 1);
             let imgGroup = new THREE.Group();
             imgGroup.add(image1.mesh)
             imgGroup.add(image2.mesh)
@@ -185,6 +197,11 @@ document.addEventListener("DOMContentLoaded", function() {
         front2.position.set(1, -.6, .51)
         front3.position.set(1, .6, .51)
         front4.position.set(-1, .6, .51)
+        let frontScale = 1 + 0.03 * 10;
+        front1.scale.set(frontScale, frontScale, frontScale)
+        front2.scale.set(frontScale, frontScale, frontScale)
+        front3.scale.set(frontScale, frontScale, frontScale)
+        front4.scale.set(frontScale, frontScale, frontScale)
         let imgGroup = new THREE.Group();
         imgGroup.add(front1)
         imgGroup.add(front2)
@@ -217,14 +234,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // for (let i = 0; i < (imgcnt + 1); i++) {
 
-        for (let i = 0; i < imgStack.length; i++) {
-
-
-            imgStack[i].position.x += (-mouseX / 90000 * i - imgStack[i].position.x) * (.005 * i * i + 0.02);
-
-            imgStack[i].position.y += (mouseY / 90000 * i - imgStack[i].position.y) * (.005 * i * i + 0.02);
+        for (let i = 0; i < imgcnt; i++) {
+            let a = images1[i].getPositionZ() / .05
+                // images2[i].getPositionZ();
+                // images3[i].getPositionZ();
+                // images4[i].getPositionZ();
+            imgStack[i].position.x += (-mouseX / 90000 * a - imgStack[i].position.x) * (.005 * a * a + 0.02);
+            imgStack[i].position.y += (mouseY / 90000 * a - imgStack[i].position.y) * (.005 * a * a + 0.02);
 
         }
+        imgStack[10].position.x += (-mouseX / 90000 * 10 - imgStack[10].position.x) * (.005 * 100 + 0.02);
+        imgStack[10].position.y += (mouseY / 90000 * 10 - imgStack[10].position.y) * (.005 * 100 + 0.02);
+
         renderer.render(scene, camera);
         stats.end();
     }
@@ -247,5 +268,26 @@ document.addEventListener("DOMContentLoaded", function() {
         meshSharkie.lookAt(cursorPosition);
     });
 
+
+    const subPage1 = document.getElementById("subPage1");
+    const subPage2 = document.getElementById("subPage2");
+    const subPage3 = document.getElementById("subPage3");
+    const subPage4 = document.getElementById("subPage4");
+    const externalLink1 = "https://google.com";
+    const externalLink2 = "https://www.bing.com/";
+    const externalLink3 = "https://openai.com/";
+    const externalLink4 = "https://www.youtube.com/";
+    subPage1.addEventListener("click", function() {
+        window.open(externalLink1, "_blank");
+    });
+    subPage2.addEventListener("click", function() {
+        window.open(externalLink2, "_blank");
+    });
+    subPage3.addEventListener("click", function() {
+        window.open(externalLink3, "_blank");
+    });
+    subPage4.addEventListener("click", function() {
+        window.open(externalLink4, "_blank");
+    });
 
 });
